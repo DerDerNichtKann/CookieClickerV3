@@ -21,6 +21,8 @@ public final class CookieClickerV3 extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        //jgfdsfdsdgdsgf
+
         Objects.requireNonNull(getCommand("cookieclicker")).setExecutor(new CookieCMD(this));
         getCommand("cookieclicker").setTabCompleter(new TabCompleter());
         Bukkit.getPluginManager().registerEvents(new GUIListener(), this);
