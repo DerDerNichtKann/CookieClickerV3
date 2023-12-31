@@ -1,0 +1,14 @@
+
+name: CookieClicker
+version: '3.0.4'
+main: eurocity.eu.cookieclickerv3.CookieClickerV3
+api-version: '1.20'
+commands:
+  cookieclicker:
+    description: Öffnet die CookieClicker GUI
+    aliases: cookie
+    permission: cookieclicker.use
+  permissions:
+    cookieclicker.use:
+    description: Allows /cookieclicker command
+
