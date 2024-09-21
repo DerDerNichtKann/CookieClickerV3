@@ -1,25 +1,18 @@
 database:
   type: "sqlite"
 
-  # Only needed if using MySQL
-  # Address of the Database server
   address: ""
-  # Server port. Standard is 3306
+
   port: 3306
-  # Database Username
+
   user: ""
-  # Database password
+
   password: ""
-  # Database name.
+
   database: ""
 
-# The prefix used in all Plugin Messages
 prefix: "§5[§dCookieClicker§5] "
 
-# Select a Language.
-# You can simply add a language by copy an existing language and edit it.
-# Set a new language code and use it in setLanguage, it'll work just fine.
-# IMPORTANT: You need every message in your own translation!
 setLanguage: "en"
 language:
   de:
@@ -30,4 +23,4 @@ language:
   en:
     noPerm: "§cYou have no permission to execute this command."
     noPlayer: "§cThis command can only be executed by players"
-    cmdAdd: "§7Pleas use /cookie add [player] [ammount]"
+    cmdAdd: "§7Please use /cookie add [player] [ammount]"

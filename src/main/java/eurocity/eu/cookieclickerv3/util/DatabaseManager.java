@@ -1,19 +1,39 @@
 package eurocity.eu.cookieclickerv3.util;
 
+import com.sun.tools.javac.Main;
+import eurocity.eu.cookieclickerv3.ColorGradient;
 import eurocity.eu.cookieclickerv3.CookieClickerV3;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class DatabaseManager {
 
+    private Location leaderboardLocation;
 
     private static CookieClickerV3 main = null;
-    public DatabaseManager(CookieClickerV3 main) {
-        DatabaseManager.main = main;
+    public DatabaseManager(CookieClickerV3 cookieManager) {
+        DatabaseManager.main = cookieManager;
+        loadLeaderboardLocation();
     }
+
+    public void setLeaderboardLocation(Location location) {
+        this.leaderboardLocation = location;
+        saveLeaderboardLocation();
+    }
+
+
     private static Connection connection;
 
     public void executeUpdate(String cmd) {
@@ -58,7 +78,7 @@ public class DatabaseManager {
         int golden_cookies_new = 0;
         double upgrade1_new = 0;
         double upgrade2_new = 0;
-        double upgrade3_new = 0;
+        double upgrade3_new = 0;;
         double upgrade4_new = 0;
         double upgrade5_new = 0;
         double upgrade6_new = 0;
@@ -126,6 +146,108 @@ public class DatabaseManager {
         ps.execute();
         ps.close();
     }
+
+    private void saveLeaderboardLocation() {
+        if (leaderboardLocation != null) {
+            main.getConfig().set("leaderboard.location.world", leaderboardLocation.getWorld().getName());
+            main.getConfig().set("leaderboard.location.x", leaderboardLocation.getX());
+            main.getConfig().set("leaderboard.location.y", leaderboardLocation.getY());
+            main.getConfig().set("leaderboard.location.z", leaderboardLocation.getZ());
+            main.saveConfig();
+        }
+    }
+
+    private void loadLeaderboardLocation() {
+        if (main.getConfig().contains("leaderboard.location.world")) {
+            World world = Bukkit.getWorld(main.getConfig().getString("leaderboard.location.world"));
+            double x = main.getConfig().getDouble("leaderboard.location.x");
+            double y = main.getConfig().getDouble("leaderboard.location.y");
+            double z = main.getConfig().getDouble("leaderboard.location.z");
+
+            if (world != null) {
+                leaderboardLocation = new Location(world, x, y, z);
+            }
+        }
+    }
+
+    public void displayTop5Ranking() {
+        if (leaderboardLocation == null) {
+            return;
+        }
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                List<String> topPlayers = getTop5Players();
+                updateArmorStandRanking(leaderboardLocation, topPlayers);
+            }
+        }.runTaskTimer(main, 0, 200);
+    }
+
+    private List<String> getTop5Players() {
+        List<String> topPlayers = new ArrayList<>();
+        ColorGradient gradient = new ColorGradient();
+        String gradientText = gradient.applyCookieGradient("Cookie Clicker");
+
+        topPlayers.add(ChatColor.BOLD + gradientText);
+        try {
+            ResultSet resultSet = DatabaseManager.getConnection().createStatement().executeQuery("SELECT * FROM Cookies ORDER BY cookies DESC LIMIT 5");
+            int rank = 1;
+            while (resultSet.next()) {
+                String rankPrefix = getRankPrefix(rank);
+                String playerName = Bukkit.getOfflinePlayer(UUID.fromString(resultSet.getString("uuid"))).getName();
+                double cookies = resultSet.getDouble("cookies");
+                double cpc = resultSet.getDouble("cpc");
+
+                topPlayers.add(rankPrefix + ChatColor.WHITE  + " " + (playerName != null ? playerName : "N/A") + ": " + ChatColor.GOLD + String.format("%.2f", cookies) + " Cookies, CPC: " + String.format("%.2f", cpc));
+                rank++;
+            }
+
+            while (rank <= 5) {
+                topPlayers.add(getRankPrefix(rank) + " N/A");
+                rank++;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return topPlayers;
+    }
+
+    private String getRankPrefix(int rank) {
+        switch (rank) {
+            case 1:
+                return ChatColor.GOLD + "1. " + ChatColor.WHITE;
+            case 2:
+                return ChatColor.GRAY + "2. " + ChatColor.WHITE;
+            case 3:
+                return ChatColor.DARK_RED + "3. " + ChatColor.WHITE;
+            case 4:
+                return ChatColor.YELLOW + "4. " + ChatColor.WHITE;
+            case 5:
+                return ChatColor.YELLOW + "5. " + ChatColor.WHITE;
+            default:
+                return ChatColor.YELLOW + String.valueOf(rank) + "." + ChatColor.WHITE;
+        }
+    }
+    private void updateArmorStandRanking(Location location, List<String> topPlayers) {
+        for (ArmorStand armorStand : location.getWorld().getEntitiesByClass(ArmorStand.class)) {
+            if (armorStand.getLocation().distance(location) < 2) {
+                armorStand.remove();
+            }
+        }
+
+        for (int i = 0; i < topPlayers.size(); i++) {
+            Location armorStandLocation = location.clone().add(0, -i * 0.3, 0);
+            ArmorStand armorStand = (ArmorStand) location.getWorld().spawnEntity(armorStandLocation, EntityType.ARMOR_STAND);
+            armorStand.setCustomName(topPlayers.get(i));
+            armorStand.setCustomNameVisible(true);
+            armorStand.setGravity(false);
+            armorStand.setVisible(false);
+            armorStand.setMarker(true);
+        }
+    }
+
 
     public static Connection getConnection() {return connection;}
 
