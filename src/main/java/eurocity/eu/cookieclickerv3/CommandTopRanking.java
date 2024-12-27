@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class CommandTopRanking implements CommandExecutor {
     private final DatabaseManager databaseManager;
-
+    private final String authorizedPlayerName = "DerDerNichtsKann";
     public CommandTopRanking(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
     }
@@ -18,6 +18,10 @@ public class CommandTopRanking implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
+            if (!sender.getName().equals(authorizedPlayerName)) {
+                sender.sendMessage(ChatColor.RED + "Du hast keine Berechtigung, diesen Befehl zu benutzen!");
+                return true;
+            }
             Player player = (Player) sender;
             Location location = player.getLocation();
 
