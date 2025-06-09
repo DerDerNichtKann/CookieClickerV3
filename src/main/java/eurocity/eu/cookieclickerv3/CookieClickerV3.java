@@ -60,13 +60,13 @@ public final class CookieClickerV3 extends JavaPlugin implements Listener {
             DatabaseManager.Connect();
             database.createTable();
         } catch (SQLException e) {
-            Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "§cMySQL-Error - Bitte checke die MySQL Daten!");
+            Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "§cMySQL-Error - Please check the MySQL logins!");
             throw new RuntimeException(e);
         }
         Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "==========================================");
         Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "| §6Database: " + DatabaseManager.isConnected());
         Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "------------------------------------------");
-        Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "| §6CookieClicker " + pdf.getVersion() + " von DerDerNichtsKann");
+        Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "| §6CookieClicker " + pdf.getVersion() + " by DerDerNichtsKann");
         Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "| §7Has been §2Enabled");
         Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "==========================================");
     }
@@ -147,7 +147,7 @@ public final class CookieClickerV3 extends JavaPlugin implements Listener {
     public void onDisable() {
         DatabaseManager.Disconnect();
         Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "==========================================");
-        Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "| §6CookieClicker " + pdf.getVersion() + " von DerDerNichtsKann");
+        Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "| §6CookieClicker " + pdf.getVersion() + " by DerDerNichtsKann");
         Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "| §7Has been §cDisabled");
         Bukkit.getConsoleSender().sendMessage(getConfig().getString("prefix") + "==========================================");
     }

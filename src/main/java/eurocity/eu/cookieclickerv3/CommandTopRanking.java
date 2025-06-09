@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 public class CommandTopRanking implements CommandExecutor {
     private final DatabaseManager databaseManager;
-    private final String authorizedPlayerName = "DerDerNichtsKann";
     public CommandTopRanking(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
     }
@@ -18,8 +17,8 @@ public class CommandTopRanking implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            if (!sender.getName().equals(authorizedPlayerName)) {
-                sender.sendMessage(ChatColor.RED + "Du hast keine Berechtigung, diesen Befehl zu benutzen!");
+            if (!sender.hasPermission("cookie.admin")) {
+                sender.sendMessage(ChatColor.RED + "You don't have the permission!");
                 return true;
             }
             Player player = (Player) sender;
@@ -28,10 +27,9 @@ public class CommandTopRanking implements CommandExecutor {
             databaseManager.setLeaderboardLocation(location);
             databaseManager.displayTop5Ranking();
 
-            player.sendMessage(ChatColor.GREEN + "Top 5 Ranking wurde an deiner aktuellen Position platziert und wird alle 10 Sekunden aktualisiert!");
+            player.sendMessage(ChatColor.GREEN + "Top 5 Ranking was placed!");
             return true;
         } else {
-            sender.sendMessage(ChatColor.RED + "Dieser Befehl kann nur von einem Spieler ausgeführt werden.");
             return false;
         }
     }

@@ -89,7 +89,7 @@ public class CookieCMD implements CommandExecutor {
 
    public void CookieAdd(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-       if (!player.getName().equals("DerDerNichtsKann")) {
+       if (!sender.hasPermission("cookie.admin")) {
             player.sendMessage(Objects.requireNonNull(main.getConfig().getString("language." + main.getConfig().getString("setLanguage") + ".noPerm")));
             return;
         }
@@ -103,7 +103,7 @@ public class CookieCMD implements CommandExecutor {
 
     public void CookieTake(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if (!player.getName().equals("DerDerNichtsKann")) {
+        if (!sender.hasPermission("cookie.admin")) {
             player.sendMessage(Objects.requireNonNull(main.getConfig().getString("language." + main.getConfig().getString("setLanguage") + ".noPerm")));
             return;
         }
@@ -117,7 +117,7 @@ public class CookieCMD implements CommandExecutor {
 
     public void CookieReset(CommandSender sender, String[] args) throws SQLException {
         Player player = (Player) sender;
-        if (!player.getName().equals("DerDerNichtsKann")) {
+        if (!sender.hasPermission("cookie.admin")) {
             player.sendMessage(Objects.requireNonNull(main.getConfig().getString("language." + main.getConfig().getString("setLanguage") + ".noPerm")));
             return;
         }
@@ -133,7 +133,7 @@ public class CookieCMD implements CommandExecutor {
 
     public void CookieSet(CommandSender sender, String[] args) throws SQLException {
         Player player = (Player) sender;
-        if (!player.getName().equals("DerDerNichtsKann")) {
+        if (!sender.hasPermission("cookie.admin")) {
             player.sendMessage(Objects.requireNonNull(main.getConfig().getString("language." + main.getConfig().getString("setLanguage") + ".noPerm")));
             return;
         }
@@ -145,8 +145,6 @@ public class CookieCMD implements CommandExecutor {
         if (target != null) {
             double keksi = 0.0 - CookieManager.getCookie(target);
             CookieManager.modifyCookie(keksi+ Double.parseDouble(args[2]), target);
-        } else {
-            sender.sendMessage("Der Spieler ist nicht online oder existiert nicht.");
         }
    }
 
