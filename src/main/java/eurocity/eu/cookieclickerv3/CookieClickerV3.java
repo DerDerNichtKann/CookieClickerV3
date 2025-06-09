@@ -1,9 +1,6 @@
 package eurocity.eu.cookieclickerv3;
 
-import eurocity.eu.cookieclickerv3.util.DatabaseManager;
-import eurocity.eu.cookieclickerv3.util.GUI;
-import eurocity.eu.cookieclickerv3.util.GUIListener;
-import eurocity.eu.cookieclickerv3.util.TabCompleter;
+import eurocity.eu.cookieclickerv3.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -48,6 +45,7 @@ public final class CookieClickerV3 extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         instance = this;
+        Metrics metrics = new Metrics(this, 26137);
         databaseManager = new DatabaseManager(this);
         Objects.requireNonNull(getCommand("cookieclicker")).setExecutor(new CookieCMD(this));
         getCommand("cookieclicker").setTabCompleter(new TabCompleter());
