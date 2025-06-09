@@ -7,5 +7,5 @@ commands:
   placeTopRanking:
     description: places the top
   cookieclicker:
-    description: Öffnet die CookieClicker GUI
+    description: Opens the CookieClicker GUI
     aliases: cookie
