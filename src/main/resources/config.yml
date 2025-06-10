@@ -1,4 +1,5 @@
 database:
+  # You can use the type mysql or sqlite, sqlite don't need anymore setup
   type: "sqlite"
 
   address: ""
